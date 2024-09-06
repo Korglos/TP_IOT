@@ -30,29 +30,19 @@ MicroBit uBit;
 int main() {
     // Initialisation
     uBit.init();
-    
-    // Calibration du magnétomètre
-    uBit.compass.calibrate();
 
     while (true) {
-        // Lire la direction du magnétomètre en degrés (0 à 360)
-        int heading = uBit.compass.heading();
+        // Allumer les LED
+        uBit.io.P8.setDigitalValue(1);  // Allume la LED connectée à la broche 3
+        uBit.io.P12.setDigitalValue(1);  // Allume la LED connectée à la broche 4
+        uBit.io.P16.setDigitalValue(1);  // Allume la LED connectée à la broche 6
+        uBit.sleep(1000);  // Attendre 1 seconde
 
-        // Afficher la direction du Nord
-        if (heading < 45 || heading > 315) {
-            uBit.display.print("N");  // Nord
-        } else if (heading < 135) {
-            uBit.display.print("E");  // Est
-        } else if (heading < 225) {
-            uBit.display.print("S");  // Sud
-        } else {
-            uBit.display.print("O");  // Ouest
-        }
-
-        // Petite pause pour éviter un rafraîchissement trop rapide
-        uBit.sleep(200);
+        // Éteindre les LED
+        uBit.io.P8.setDigitalValue(0);  // Éteint la LED connectée à la broche 3
+        uBit.io.P12.setDigitalValue(0);  // Éteint la LED connectée à la broche 4
+        uBit.io.P16.setDigitalValue(0);  // Éteint la LED connectée à la broche 6
+        uBit.sleep(1000);  // Attendre 1 seconde
     }
-
-    // release_fiber();
 }
 
