@@ -29,16 +29,16 @@ DEALINGS IN THE SOFTWARE.
 
 MicroBit uBit;
 void neopixelLed(){
-    Neopixel pixel(MICROBIT_PIN_P8,1);
+    Neopixel pixel(MICROBIT_PIN_P8, 2);
     while(1){
-        pixel.setColor(0,255,0,0);
-        pixel.show();
+        pixel.showColor(0,255,0,0);
+        pixel.showColor(1,0,0,255);
         uBit.sleep(1000);
-        pixel.setColor(0,0,255,0);
-        pixel.show();
+        pixel.showColor(0,0,255,0);
+        pixel.showColor(1,0,255,0);
         uBit.sleep(1000);
-        pixel.setColor(0,0,0,255);
-        pixel.show();
+        pixel.showColor(0,0,0,255);
+        pixel.showColor(1,255,0,0);
         uBit.sleep(1000);
     }
 }
