@@ -24,16 +24,24 @@ DEALINGS IN THE SOFTWARE.
 */
 
 #include "MicroBit.h"
-// #include "uBit_neopixel.h"
+#include "neopixel.h"
 #include "nrf_gpio.h"
 
 MicroBit uBit;
-
-void initNeoPixel(uint8_t pin_num, uint16_t num_leds){
-    nrf_gpio_cfg_output(pin_num);
-    NRF_GPIO->OUTCLR = (1UL << pin_num);
+void neopixelLed(){
+    Neopixel pixel(MICROBIT_PIN_P8,1);
+    while(1){
+        pixel.setColor(0,255,0,0);
+        pixel.show();
+        uBit.sleep(1000);
+        pixel.setColor(0,0,255,0);
+        pixel.show();
+        uBit.sleep(1000);
+        pixel.setColor(0,0,0,255);
+        pixel.show();
+        uBit.sleep(1000);
+    }
 }
-
 void feuTriColor(){
     while (true) {
         // Allumer les LED
@@ -54,6 +62,7 @@ int main() {
     // Initialisation
     uBit.init();
     // feuTriColor();
-    initNeoPixel(8,1);
+    // neopixelLed();
+
 }
 
