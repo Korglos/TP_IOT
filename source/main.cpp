@@ -58,11 +58,40 @@ void feuTriColor(){
     }
 }
 
+void liaisonSerie() {
+
+    // Affiche un message pour indiquer que le programme a démarré
+    uBit.serial.send("Programme de lecture des capteurs démarré\r\n");
+
+    while (true) {
+        // Lire les valeurs de l'accéléromètre
+        int x = uBit.accelerometer.getX();
+        int y = uBit.accelerometer.getY();
+        int z = uBit.accelerometer.getZ();
+
+        // Lire la température
+        int temperature = uBit.thermometer.getTemperature();
+
+        // Lire les valeurs de la boussole
+        int heading = uBit.compass.heading();
+
+        // Formater les données des capteurs pour l'envoi
+        ManagedString data = "Accelerometre X: " + ManagedString(x) + " Y: " + ManagedString(y) + " Z: " + ManagedString(z) + "\r\n";
+        data = data + "Temperature: " + ManagedString(temperature) + " C\r\n";
+        data = data + "Boussole: " + ManagedString(heading) + " degres\r\n";
+
+        // Envoyer les données via USB (interface série)
+        uBit.serial.send(data);
+
+        // Attendre une seconde avant de lire les données à nouveau
+        uBit.sleep(1000);
+    }
+}
+
 int main() {
     // Initialisation
     uBit.init();
     // feuTriColor();
     // neopixelLed();
-
+    liaisonSerie();
 }
-
