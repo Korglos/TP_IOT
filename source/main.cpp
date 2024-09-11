@@ -24,7 +24,7 @@ DEALINGS IN THE SOFTWARE.
 */
 
 #include "MicroBit.h"
-#include "uBit_neopixel.h"
+// #include "uBit_neopixel.h"
 #include "nrf_gpio.h"
 
 MicroBit uBit;
@@ -53,6 +53,7 @@ void feuTriColor(){
 int main() {
     // Initialisation
     uBit.init();
+    // feuTriColor();
     initNeoPixel(8,1);
 }
 
