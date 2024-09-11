@@ -26,8 +26,16 @@ DEALINGS IN THE SOFTWARE.
 #include "MicroBit.h"
 #include "neopixel.h"
 #include "nrf_gpio.h"
+#include "tsl256x.h"
+#include "ssd1306.h"
+#include "veml6070.h"
+#include "ssd1306.h"
 
+MicroBitI2C i2c(I2C_SDA0,I2C_SCL0);
 MicroBit uBit;
+MicroBitPin P0(MICROBIT_ID_IO_P0, MICROBIT_PIN_P0, PIN_CAPABILITY_DIGITAL_OUT);
+ssd1306 screen(&uBit, &i2c, &P0);
+
 void neopixelLed(){
     Neopixel pixel(MICROBIT_PIN_P8, 2);
     while(1){
@@ -87,11 +95,54 @@ void liaisonSerie() {
         uBit.sleep(1000);
     }
 }
+void capteurMeteo(){
+    tsl256x tsl(&uBit,&i2c);
+    uint16_t comb =0;
+    uint16_t ir = 0;
+    uint32_t lux = 0;
+
+    veml6070 veml(&uBit,&i2c);
+    uint16_t uv = 0;
+
+    while(true)
+    {
+        tsl.sensor_read(&comb, &ir, &lux);
+        ManagedString display = "Lux:" + ManagedString((int)lux);
+        uBit.display.scroll(display.toCharArray());
+
+        uBit.sleep(1000);
+
+        veml.sensor_read(&uv);
+        display = "UV:" + ManagedString(uv);
+        uBit.display.scroll(display.toCharArray());
+
+        uBit.sleep(1000);
+    }
+}
+void ecran(){
+    
+    while(true)
+    {
+        screen.display_line(0,0,"ABCDEFGHIJKLMNOP");
+        screen.display_line(1,0,"BCDEFGHIJKLMNOP");
+        screen.display_line(2,0,"CDEFGHIJKLMNOP");
+        screen.display_line(3,0,"DEFGHIJKLMNOP");
+        screen.display_line(4,0,"EFGHIJKLMNOP");
+        screen.display_line(5,0,"FGHIJKLMNOP");
+        screen.display_line(6,0,"GHIJKLMNOP");
+        screen.display_line(7,0,"HIJKLMNOP");
+        screen.update_screen();
+        uBit.sleep(1000);
+    }
+}
 
 int main() {
     // Initialisation
     uBit.init();
     // feuTriColor();
     // neopixelLed();
-    liaisonSerie();
+    // liaisonSerie();
+    // capteurMeteo();
+    ecran();
+    release_fiber();
 }
